@@ -1,0 +1,144 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/common.jsp"%>
+<%@ page isELIgnored="false" %> 
+<%@ page contentType="text/html; charset=UTF-8" %>
+
+<div class="row">
+	<div class="col-xs-12 col-sm-12">
+		<div class="box">
+			<div class="box-content">
+				<form class="form-horizontal" model="form" id="mForm" method="post" action="${ctx}/system/knowledge/question/update/${model.id}.htm">
+					<input name="options" type="hidden" id="options"/>
+					<input name="sectionId" id="sectionId" type="hidden" id="${model.section.id }"/>
+					
+					<table width="98%" border="1" style="color: #666; background-color: #ffffff;">
+						<tr height="40px;">
+							<td width="20%" align="center">题目类型</td>
+							<td>
+								<div class="col-sm-4">
+										<div class="radio-inline">
+										<label>
+											<input type="radio" name="questionType" id="questionType" value="SINGLE" <c:if test="${model.questionType == 'SINGLE'}">checked</c:if>>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;单选 
+											<i class="fa fa-circle-o"></i>
+										</label>
+										</div>
+										<div class="radio-inline">
+											<label>
+												<input type="radio" name="questionType" value="MULTIPLE" <c:if test="${model.questionType == 'MULTIPLE'}">checked</c:if>>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 多选
+												<i class="fa fa-circle-o"></i>
+											</label>
+										</div>
+									</div>
+							</td>
+						</tr>
+						<tr>
+							<td width="20%" align="center">题目内容</td>
+							<td><textarea class="form-control" rows="2" style="height:70px;width:640px" name="question" id="question">${model.question }</textarea></td>
+						</tr>
+						<tr style="margin: 5px;">
+							<td align="center">答案选项</td>
+							
+							<td>
+								<table cellpadding="0" cellspacing="0">
+									<c:forEach items="${model.options}" var="item" varStatus="status">
+										<c:if test="${status.index%2==0}">
+											<tr class="odd">
+										</c:if>
+										
+										<td>
+						                   <table cellpadding="0" cellspacing="0">
+						                       <tr>
+						                           <td style="width:30px;height:25px;background-color:#64b4ff;text-align:center;color:#ffffff">${item.code }</td>
+						                           <td rowspan="2"><textarea id="option_ctn_${item.id}" name="option_ctn_${item.id}" style="height:70px;width:300px">${item.content }</textarea></td>
+						                       </tr>
+						                       <tr>
+						                           <td style="align-content:center;background-color:#e9cdcd;padding-left:5px;">
+						                               <input name="answer1" id="option_${item.id}" value="${item.code }" type="checkbox" <c:if test="${item.answerType == 'YES' }">checked="checked"</c:if>>
+						                               
+						                           </td>
+						                       </tr>
+						                   </table> 
+						               </td>
+						               
+										<c:if test="${status.index%2==1}">
+											</tr> 
+										</c:if>
+										<c:if test="${fn:length(model.options) == (status.index+1)}">
+											<c:if test="${fn:length(model.options)%2 ==1}">
+												<td class=" sorting_1">
+												</td>
+											</tr> 
+											</c:if>
+										</c:if>
+									</c:forEach>
+						            
+           						</table>
+
+							</td>
+						</tr>
+						<!--tr>
+							<td width="20%" align="center">答案解析</td>
+							<td><textarea class="form-control" rows="2" name="question">${model.question }</textarea></td>
+						</tr-->
+						<tr>
+							<td colspan="2" align="center" style="padding-top:20px;">
+								<div class="col-sm-offset-6 col-sm-4">
+									<button type="button" class="btn btn-primary btn-label-left" onclick="saveForm();">
+									<span><i class="fa fa-clock-o"></i></span>
+										确定
+									</button>
+								</div>
+								<div class="col-sm-2">
+									<button type="button" class="btn btn-default btn-label-left" onclick="closeBoxFromWin();">
+									<span><i class="fa fa-clock-o txt-danger"></i></span>
+										取消
+									</button>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	
+	function saveForm(){
+			var url = '${ctx}/system/knowledge/question/update/${model.id}.htm';
+			var data = {
+					sectionId: '${model.section.id}',
+					questionType:$("#questionType").val(),
+					question:$("#question").val(),
+					options:$("#options").val()
+		    };
+			alert(data.sectionId);
+			alert(data.questionType);
+			alert(data.question);
+			alert(data.options);
+			$.ajax({
+				mimeType: 'text/html; charset=utf-8', // ! Need set mimeType only when run from local file
+				url: url,
+				data:data,
+				type: 'POST',
+				success: function(data) {
+					//
+				},
+				error: function (jqXHR, textStatus, errorThrown) {
+					alert(errorThrown);
+				},
+				dataType: "html",
+				async: false
+			});
+	}
+	
+	/* after seriable
+	[
+	 {"content":"12亿","answerDesc":null,"answerType":"NO","code":"A"},
+	 {"content":"13亿","answerDesc":"中国目前有13亿人口","answerType":"YES","code":"B"},
+	 {"content":"14亿","answerDesc":null,"answerType":"NO","code":"C"},
+	 {"content":"15亿","answerDesc":null,"answerType":"NO","code":"D"}
+	 ]
+	*/
+</script>
