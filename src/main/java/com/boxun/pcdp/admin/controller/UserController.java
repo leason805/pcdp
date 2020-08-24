@@ -1,7 +1,6 @@
 package com.boxun.pcdp.admin.controller;
 
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.boxun.estms.entity.Const;
-import com.boxun.estms.pojo.UserInfo;
 import com.boxun.estms.util.MD5;
 import com.boxun.estms.util.StringUtil;
 import com.boxun.pcdp.admin.entity.TCompany;
@@ -24,8 +22,6 @@ import com.boxun.pcdp.admin.entity.TUser;
 import com.boxun.pcdp.admin.service.ICompanyService;
 import com.boxun.pcdp.admin.service.IUserService;
 import com.boxun.pcdp.basic.controller.BaseController;
-import com.boxun.pcdp.estimate.entity.EIndicator;
-import com.boxun.pcdp.estimate.entity.EIndicatorScoreItem;
 
 @Controller
 @RequestMapping("/system/admin/user")
@@ -136,6 +132,23 @@ public class UserController extends BaseController{
 			try{
 				TUser user = this.userService.load(id);
 				user.setStatus(Const.UserStatus.DISABLE);
+				this.userService.update(user);
+			}
+			catch(Exception e){
+				map.put("status", "fail");  
+			}
+			map.put("status", "success");  
+		}
+		return map; 
+	}
+	
+	@RequestMapping("/delete")
+	public @ResponseBody Map<String, Object> delete(Long id){
+		Map<String, Object> map  = new HashMap<String, Object>();
+		if(id != null){
+			try{
+				TUser user = this.userService.load(id);
+				user.setStatus(Const.UserStatus.DELETE);
 				this.userService.update(user);
 			}
 			catch(Exception e){

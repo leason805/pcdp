@@ -26,7 +26,7 @@ public class Const {
 	public static final String FQDN = "FQDN";
 	
 	public enum UserStatus {
-		 ENABLE("启用"), DISABLE("禁用");
+		 ENABLE("启用"), DISABLE("禁用"), DELETE("删除");
 		 
 		 private String value;
 		 

@@ -63,7 +63,11 @@ public class UserServiceImpl implements IUserService{
 
 	@Override
 	public List<TUser> list() {
-		return this.userDao.loadAll();
+//		return this.userDao.loadAll();
+		DetachedCriteria criteria = this.userDao.createDetachedCriteria();
+		criteria.add(Restrictions.ne("status", Const.UserStatus.DELETE));
+		List<TUser> list = this.userDao.findByCriteria(criteria);
+		return list;
 	}
 
 	@Override
@@ -87,6 +91,7 @@ public class UserServiceImpl implements IUserService{
 				}
 			}
 			criteria.add(Restrictions.not( Restrictions.in("id", ids)));
+			criteria.add(Restrictions.ne("status", Const.UserStatus.DELETE));
 			//criteria.add(Restrictions.sqlRestriction(" id not in (select user_id from BX_USER_ROLE where role_id = " + roleid + ")"));
 		}
 		List<TUser> list = this.userDao.findByCriteria(criteria);

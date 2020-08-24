@@ -62,7 +62,8 @@
 	</div>
 </div>
 	
-
+<script src="${ctx}/plugins/jquery-easyui/jquery.easyui.min.js" type="text/javascript" ></script>
+<script src="${ctx}/plugins/jquery-easyui/locale/easyui-lang-zh_CN.js" type="text/javascript"></script>
 <script type="text/javascript">
 // Run Datables plugin and create 3 variants of settings
 function UserTable(){
@@ -83,10 +84,10 @@ function UserTable(){
 		        "mRender": function(data, type, row) {
 		        	var str = "";
 		        	if(row.status == 'ENABLE'){
-		        		str = '<a href="javascript:edit(' + data + ');">编辑</a>&nbsp;&nbsp;<a href="javascript:update(1, ' + data + ');">禁用</a>';
+		        		str = '<a href="javascript:edit(' + data + ');">编辑</a>&nbsp;&nbsp;<a href="javascript:update(1, ' + data + ');">禁用</a>&nbsp;&nbsp;<a href="javascript:remove(' + data + ');">删除</a>';
 		        	}
 		        	if(row.status == 'DISABLE'){
-		        		str = '<a href="javascript:edit(' + data + ');">编辑</a>&nbsp;&nbsp;<a href="javascript:update(2, ' + data + ');">启用</a>';
+		        		str = '<a href="javascript:edit(' + data + ');">编辑</a>&nbsp;&nbsp;<a href="javascript:update(2, ' + data + ');">启用</a>&nbsp;&nbsp;<a href="javascript:remove(' + data + ');">删除</a>';
 		        	}
 		          return str;
 		        },
@@ -185,7 +186,6 @@ function update(type, id){
 	var url;
 	if(type == 2){
 		url = '${ctx}/system/admin/user/enable.htm'
-		
 	}
 	if(type == 1){
 		url = '${ctx}/system/admin/user/disable.htm';
@@ -201,7 +201,7 @@ function update(type, id){
 		success:function(data) {  
 			if(data.status == 'success'){
 				LoadAjaxContent('${ctx}/system/admin/user/list.htm');
-				OpenWindow('操作结果', '您的操作已成功，记录已保存！');
+				OpenWindow('操作结果', '您的操作已成功！');
 			}else{  
 				OpenWindow('操作结果', '您的操作出现错误，请重新再试！');
 			}  
@@ -209,6 +209,33 @@ function update(type, id){
 		error : function() {  
 			OpenWindow('操作结果', '您的操作出现错误，请重新再试！');
 		}  
+	});
+}
+
+function remove(id){
+	$.messager.confirm('确认信息', '确认删除该用户？', function(r){
+		if (r){
+			var aj = $.ajax( {  
+				url: '${ctx}/system/admin/user/delete.htm',// 跳转到 action  
+				data:{  
+					id : id
+				},  
+				type:'post',  
+				cache:false,  
+				dataType:'json',  
+				success:function(data) {  
+					if(data.status == 'success'){
+						LoadAjaxContent('${ctx}/system/admin/user/list.htm');
+						OpenWindow('操作结果', '您的操作已成功！');
+					}else{  
+						OpenWindow('操作结果', '您的操作出现错误，请重新再试！');
+					}  
+				},  
+				error : function() {  
+					OpenWindow('操作结果', '您的操作出现错误，请重新再试！');
+				}  
+			});
+		}
 	});
 }
 
