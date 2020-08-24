@@ -128,6 +128,7 @@ public class ArrangeUserServiceImpl implements IArrangeUserService{
 //			}
 			
 			criteria.add(Restrictions.not( Restrictions.in("id", ids)));
+			criteria.add(Restrictions.ne("status", Const.UserStatus.DELETE));
 			
 			//criteria.add(Restrictions.sqlRestriction(" id not in (select user_id from KN_ARRANGE_USER where user_id is not null and ARRANGE_ID = " + arrangeId + ")"));
 		}
