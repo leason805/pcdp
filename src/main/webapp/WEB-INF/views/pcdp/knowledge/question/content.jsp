@@ -90,18 +90,18 @@
 				<div class="box-content no-padding table-responsive">
 					<table aria-describedby="datatable-m_info" class="table table-bordered table-striped table-hover table-heading table-datatable dataTable" id="datatable-m">
 						<thead>
-							<!--tr role="row">
+							<tr role="row">
 								<th rowspan="1" colspan="3">
-									<a class="iframe btn btn-primary btn-label-left cboxElement" href="${ctx}/system/knowledge/question/showimport.htm">
+									<a class="iframe btn btn-primary btn-label-left cboxElement" href="#" onclick="removeAll();">
 										<span><i class="fa fa-clock-o"></i></span>
-										批量导入试题
+										全量删除
 									</a>
 								</th>
-							</tr-->
+							</tr>
 							<tr role="row">
 								<th aria-label="指标名称: activate to sort column" aria-sort="" colspan="1" rowspan="1" aria-controls="datatable-m" tabindex="0" role="columnheader" class="">试题</th>
-								<th aria-label="指标名称: activate to sort column" aria-sort="" colspan="1" rowspan="1" aria-controls="datatable-m" tabindex="0" role="columnheader" class="">类型</th>
-								<th aria-label="指标名称: activate to sort column" aria-sort="" colspan="1" rowspan="1" aria-controls="datatable-m" tabindex="0" role="columnheader" class="">操作</th>
+								<th aria-label="指标名称: activate to sort column" aria-sort="" colspan="1" rowspan="1" aria-controls="datatable-m" tabindex="0" role="columnheader" class="" width="7%">类型</th>
+								<th aria-label="指标名称: activate to sort column" aria-sort="" colspan="1" rowspan="1" aria-controls="datatable-m" tabindex="0" role="columnheader" class="" width="11%">操作</th>
 							</tr>
 						</thead>
 						
@@ -141,7 +141,7 @@ var oTable;
 			 {
 			        "mRender": function(data, type, row) {
 			        	//alert(row.aData.length);
-			          return '<a href="#" class="edt_detail" onclick="edit(this,' + data + ');">编辑</a>&nbsp;&nbsp;';
+			          return '<a href="#" class="edt_detail" onclick="edit(this,' + data + ');">编辑</a>&nbsp;&nbsp;<a href="#" class="edt_detail" onclick="remove(this,' + data + ');">删除</a>';
 			        },
 			        "aTargets": [2]
 			 }
@@ -202,6 +202,72 @@ var oTable;
             fnFormatDetails(nTr, id);
         }
 		
+	}
+	
+	function remove(obj, id){
+		var nTr = $(obj).parents('tr')[0];
+		$.messager.confirm('确认信息', '确认删除该试题？', function(r){
+			if (r){
+				var aj = $.ajax( {  
+					url: '${ctx}/system/knowledge/question/delete.htm',// 跳转到 action  
+					data:{  
+						id : id
+					},  
+					type:'post',  
+					cache:false,  
+					dataType:'json',  
+					success:function(data) {  
+						if(data.status == 'success'){
+							$(nTr).children('td').each(function(j){  // 遍历 tr 的各个 td
+								$(this).css("background-color", "#FF69B4");
+							});
+							$(nTr).find('td:last').text("已删除");
+						}
+						else if(data.status == 'exist'){
+							alert('该试题已经被使用，无法删除！');
+						}
+						else{  
+							alert('您的操作出现错误，请重新再试！');
+						}  
+					},  
+					error : function() {  
+						alert('您的操作出现错误，请重新再试！');
+					}  
+				});
+			}
+		});
+	}
+	
+	function removeAll(){
+		$.messager.confirm('确认信息', '确认删除该目录全部试题？', function(r){
+			if (r){
+				var aj = $.ajax( {  
+					url: '${ctx}/system/knowledge/question/deleteAll.htm',// 跳转到 action  
+					data:{  
+						sectionId : '${id}'
+					},  
+					type:'post',  
+					cache:false,  
+					dataType:'json',  
+					success:function(data) {  
+						if(data.status == 'success'){
+							alert('您的操作已成功！');
+							window.location.reload();
+						}
+						else if(data.status == 'exist'){
+							alert('您的操作已成功，但有' + data.size + '条记录已经进行考试关联，无法删除！');
+							window.location.reload();
+						}
+						else{  
+							alert('您的操作出现错误，请重新再试！');
+						}  
+					},  
+					error : function() {  
+						alert('您的操作出现错误，请重新再试！');
+					}  
+				});
+			}
+		});
 	}
 	
 	function closeTr(){

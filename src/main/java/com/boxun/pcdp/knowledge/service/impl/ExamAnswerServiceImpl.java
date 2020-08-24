@@ -1,6 +1,8 @@
 package com.boxun.pcdp.knowledge.service.impl;
 
+import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,4 +42,12 @@ public class ExamAnswerServiceImpl implements IExamAnswerService{
 		return this.examanswerDao.loadAll();
 	}
 
+	public Long countByQuestionId(Long questionid){
+		String sql = "select count(id) size from kn_exam_answer where question_id=" + questionid;
+		 List<Map<String, Object>> list = this.examanswerDao.getQueryResultToListMap(sql);
+		 if(list != null && !list.isEmpty()){
+			 return ((BigInteger)list.get(0).get("size")).longValue();
+		 }
+		 return 0L;
+	}
 }

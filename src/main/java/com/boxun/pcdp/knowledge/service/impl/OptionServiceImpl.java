@@ -40,4 +40,11 @@ public class OptionServiceImpl implements IOptionService{
 		return this.optionDao.loadAll();
 	}
 
+	@Override
+	public void batchDelete(Long sectionId) {
+		String sql = "delete from KOption where id in (select a.id from (select op.id from KOption op,  KQuestion ques WHERE op.question.id = ques.id AND ques.section.id = " + sectionId 
+				+ " and (op.id not in (SELECT op.id FROM KOption op,  KQuestion ques, KExamAnswer ans WHERE ans.question.id = ques.id AND op.question.id = ques.id AND ques.section.id = " + sectionId + "))) AS a)";
+		this.optionDao.bulkUpdate(sql);
+	}
+
 }

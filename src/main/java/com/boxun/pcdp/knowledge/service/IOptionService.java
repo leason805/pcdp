@@ -15,4 +15,6 @@ public interface IOptionService {
 	public KOption load(Long id);
 	
 	public List<KOption> list();
+	
+	public void batchDelete(Long sectionId);
 }

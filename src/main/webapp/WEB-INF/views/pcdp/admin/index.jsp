@@ -21,6 +21,8 @@
 		
 		<link href="${ctx}/plugins/colorbox-master/colorbox.css" rel="stylesheet">
 		
+		<link href="${ctx}/plugins/jquery-easyui/themes/default/easyui.css"  rel="stylesheet" />
+		<link href="${ctx}/plugins/jquery-easyui/themes/icon.css"  rel="stylesheet" />
 		
 		<link href="${ctx}/css/style.css" rel="stylesheet">
 		

@@ -77,4 +77,10 @@ public class QuestionServiceImpl implements IQuestionService{
 		return map;
 	}
 
+	@Override
+	public void batchDelete(Long sectionId) {
+		String sql = "delete from KQuestion where id not in (SELECT ques.id from KQuestion ques, KExamAnswer ans WHERE ans.question.id = ques.id) AND ques.section.id = " + sectionId ;
+		this.questionDao.bulkUpdate(sql);		
+	}
+
 }

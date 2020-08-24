@@ -15,4 +15,6 @@ public interface IExamAnswerService {
 	public KExamAnswer load(Long id);
 	
 	public List<KExamAnswer> list();
+	
+	public Long countByQuestionId(Long questionid);
 }

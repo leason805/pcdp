@@ -41,6 +41,8 @@ import com.boxun.pcdp.knowledge.entity.KQuestion;
 import com.boxun.pcdp.knowledge.entity.KSection;
 import com.boxun.pcdp.knowledge.pojo.QuestionPojo;
 import com.boxun.pcdp.knowledge.pojo.SectionPojo;
+import com.boxun.pcdp.knowledge.service.IExamAnswerService;
+import com.boxun.pcdp.knowledge.service.IOptionService;
 import com.boxun.pcdp.knowledge.service.IQuestionService;
 import com.boxun.pcdp.knowledge.service.ISectionService;
 import com.boxun.pcdp.knowledge.transformer.QuestionTransformer;
@@ -55,10 +57,16 @@ private static final Logger LOGGER = Logger.getLogger(QuestionController.class);
 	private IQuestionService questionService;
 	
 	@Autowired
+	private IOptionService optionService;
+	
+	@Autowired
 	private ISectionService sectionService;
 	
 	@Autowired
 	private ICompanyService companyService;
+	
+	@Autowired
+	private IExamAnswerService examAnswerService;
 	
 	@Autowired
 	private QuestionTransformer questionTransformer;
@@ -174,6 +182,7 @@ private static final Logger LOGGER = Logger.getLogger(QuestionController.class);
 		   				String answerDesc = null;
 		   				int row_num = sheet.getLastRowNum(); 
 		   				for (int i = 1; i <= row_num; i++) {
+		   					answer = null;
 		   					isNew = false;
 		   					row = sheet.getRow(i);
 		   					System.out.println("row: "+i);
@@ -389,5 +398,59 @@ private static final Logger LOGGER = Logger.getLogger(QuestionController.class);
 		}
 		return map;
 		//return "/success";
+	}
+	
+	
+	@RequestMapping("/delete")
+	public @ResponseBody Map<String, Object> delete(Long id){
+		Map<String, Object> map  = new HashMap<String, Object>();
+		try{
+			if(id != null){
+				Long count = examAnswerService.countByQuestionId(id);
+				if(count > 0){
+					map.put("status", "exist");
+					return map;
+				}
+				KQuestion dbRecord = questionService.load(id);
+				if(dbRecord != null){
+					questionService.delete(dbRecord);
+				}
+			}
+			map.put("status", "success");
+		}
+		catch(Exception e){
+			map.put("status", "fail");
+		}
+		return map;
+	}
+	
+	@RequestMapping("/deleteAll")
+	public @ResponseBody Map<String, Object> deleteAll(Long sectionId){
+		Map<String, Object> map  = new HashMap<String, Object>();
+		int exist = 0;
+		try{
+			if(sectionId != null){
+				List<KQuestion> list = questionService.listBySectionId(sectionId);
+				for(KQuestion question : list){
+					Long count = examAnswerService.countByQuestionId(question.getId());
+					if(count <= 0){
+						questionService.delete(question);
+					}
+					else{
+						exist++;
+					}
+				}
+			}
+			map.put("status", "success");
+			if(exist > 0){
+				map.put("status", "exist");
+				map.put("size", exist);
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			map.put("status", "fail");
+		}
+		return map;
 	}
 }

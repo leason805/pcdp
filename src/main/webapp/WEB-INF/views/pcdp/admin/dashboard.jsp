@@ -34,7 +34,7 @@
 				<div class="no-move"></div>
 			</div>
 			<div class="box-content no-padding table-responsive">
-				Hello! Dashboard!
+				
 			</div>
 		</div>
 	</div>

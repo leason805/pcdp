@@ -91,7 +91,7 @@ function edit(type, id){
 }
 
 function del(id){
-	url = "${ctx}/system/estimate/indicator/del/" + id + ".htm";
+	url = "${ctx}/system/knowledge/section/delete/" + id + ".htm";
 	$.colorbox({href:url, iframe:true, width:"65%", height:"60%"});
 }
 

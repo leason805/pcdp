@@ -25,4 +25,6 @@ public interface IQuestionService {
 	public List<KQuestion> list(List<Long> ids);
 	
 	public Map<String, Long> listQuestSizeBySection();
+	
+	public void batchDelete(Long sectionId);
 }
