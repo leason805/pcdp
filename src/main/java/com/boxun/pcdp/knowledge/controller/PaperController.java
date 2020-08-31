@@ -102,7 +102,7 @@ private static final Logger LOGGER = Logger.getLogger(PaperController.class);
 		}
 		
 		if(sectionId != null){
-			KSection section = this.sectionService.load(companyId);
+			KSection section = this.sectionService.load(sectionId);
 			model.setSection(section);
 		}
 		
