@@ -5,7 +5,7 @@
 <div class="row">
 	<div id="breadcrumb" class="col-md-12">
 		<ol class="breadcrumb">
-			<li><a href="#">九元航空签派员评估系统</a></li>
+			<li><a href="#">签派员评估系统</a></li>
 			<li><a href="#">培训系统</a></li>
 			<li><a href="#"></a></li>
 		</ol>

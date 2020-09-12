@@ -6,7 +6,7 @@
 <html >
 	<head>
 		<meta charset="utf-8">
-		<title>九元航空签派员评估系统</title>
+		<title>签派员评估系统</title>
 		<meta name="description" content="description">
 		<meta name="author" content="DevOOPS">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
