@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.boxun.estms.entity.Const;
 import com.boxun.estms.pojo.UserInfo;
+import com.boxun.estms.util.DateUtil;
 import com.boxun.estms.util.StringUtil;
 import com.boxun.pcdp.admin.entity.TUser;
 import com.boxun.pcdp.admin.service.IUserService;
@@ -164,6 +165,21 @@ public class ExamController extends BaseController{
 				modelMap.addAttribute("model", model);
 				modelMap.addAttribute("paper", paper);
 				modelMap.addAttribute("questions", questions);
+				
+				//考试可用时间，依据是否已经超过考试时间来计算
+				Integer availableTimeMinutes = paper.getMinutes();
+				Date examDate = model.getArrange().getExamDate();
+				//如果当前时间已经超过考试时间，则要扣减一点时间
+				Date current = DateUtil.getCurrentTime();
+				Double diff = DateUtil.timeDiffInMin(examDate, current);
+				if(diff > 0){
+					availableTimeMinutes = availableTimeMinutes - diff.intValue();
+				}
+				if(availableTimeMinutes < 0){
+					availableTimeMinutes = 0;
+				}
+				System.out.println("availableTimeMinutes:" + availableTimeMinutes);
+				modelMap.addAttribute("availableTimeMinutes", availableTimeMinutes);
 			}
 		}
 		
@@ -221,7 +237,7 @@ public class ExamController extends BaseController{
 		
 		Double finalScore = StringUtil.getDouble(scores*(paper.getScore()*1d/paper.getSize()), 2);
 		score.setScore(finalScore);
-		if(paper.getPassscore() <= scores){
+		if(paper.getPassscore() <= finalScore){
 			score.setPassType(Const.PassType.YES);
 		}
 		else{
@@ -306,11 +322,15 @@ public class ExamController extends BaseController{
 	private static List<KQuestion> random(Integer weight, List<KQuestion> list){
 		List<KQuestion> result =  new ArrayList<KQuestion>();
 		Random r = new Random();
-		Set<KQuestion> set =  new HashSet<KQuestion>();
-		while(set.size() < weight){
-			set.add(list.get(r.nextInt(list.size())));
+		KQuestion question = null;
+		Set<Long> ids = new HashSet<Long>();
+		while(ids.size() < weight){
+			question = list.get(r.nextInt(list.size()));
+			if(!ids.contains(question.getId())){
+				ids.add(question.getId());
+				result.add(question);
+			}
 		}
-		result.addAll(set);
 		return result;
 	}
 }

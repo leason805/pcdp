@@ -18,7 +18,8 @@
 		<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 		<link href='http://fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css'>
 		<link href="<%=request.getContextPath()%>/css/style.css" rel="stylesheet">
-<link href="${ctx}/css/login.css" rel="stylesheet" type="text/css" />
+		<link href="${ctx}/css/login.css" rel="stylesheet" type="text/css" />
+		
 </head>
 <body>
 <h1>系统登录</h1>
@@ -45,14 +46,14 @@
 			<div class="login_form">
 				<form action="${ctx}/system/main.htm" name="loginform" accept-charset="utf-8" id="login_form" class="loginForm" method="post">
                 <div class="uinArea" id="uinArea">
-                <label class="input-tips" for="u">帐号：</label>
+                <label class="input-tips" for="u">帐号:</label>
                 <div class="inputOuter" id="uArea">
                     
                     <input type="text" id="u" name="username" class="inputstyle"/>
                 </div>
                 </div>
                 <div class="pwdArea" id="pwdArea">
-               <label class="input-tips" for="p">密码：</label> 
+               <label class="input-tips" for="p">密码:</label> 
                <div class="inputOuter" id="pArea">
                     
                     <input type="password" id="password" name="password" class="inputstyle"/>
@@ -69,5 +70,33 @@
             <!--ç»å½end-->
   </div>
 </div>
-<div class="jianyi">*推荐使用ie8或以上版本ie浏览器或Chrome内核浏览器访问</div>
+<div class="jianyi">*推荐使用谷歌浏览器或火狐浏览器访问</div>
+<script type="text/javascript">
+window.onload = function(){
+	var type = browserType();
+	if(type != "firefox" && type != "chrome"){
+		alert("您使用的不是谷歌浏览器或火狐浏览器，为保证功能正常使用，请使用谷歌浏览器或火狐浏览器");
+	}
+}
+
+
+function browserType(){
+    var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+    if (userAgent.indexOf("Opera") > -1) {
+        return "opera"
+    }; //判断是否Opera浏览器
+    if (userAgent.indexOf("Firefox") > -1) {
+        return "firefox";
+    } //判断是否Firefox浏览器
+    if (userAgent.indexOf("Chrome") > -1){
+        return "chrome";
+    }
+    if (userAgent.indexOf("Safari") > -1) {
+        return "safari";
+    } //判断是否Safari浏览器
+    if (userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
+          return "ie";
+    }; //判断是否IE浏览器
+}
+</script>
 </body></html>

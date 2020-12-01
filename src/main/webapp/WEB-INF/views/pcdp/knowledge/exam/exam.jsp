@@ -103,7 +103,7 @@
 														</c:otherwise>
 													</c:choose>
 												</c:forEach>
-												<div style="padding-top:15px;"><input type="button" value="待确定" onclick="tbc(${question.id});"/></div>
+												<div style="padding-top:15px;"><input type="button" value="待确定" onclick="tbc($(this), '${question.id}');"/></div>
 											</td>
 										</tr> 
 									</c:forEach> 
@@ -111,15 +111,15 @@
 							</table>
 						</td>
 						<td>
-							<div style="" class="rnav" id="ansdiv">
+							<div style="overflow:auto;OVERFLOW-Y: auto;margin:20px 0px 80px 0px;height:1000px;" class="rnav" id="ansdiv">
 							    <!--div class="rnavhd">答题卡</div-->
-							    <div class="rnavct">
+							    <div class="rnavct" style="overflow:auto;OVERFLOW-Y: auto">
 							      <ul class="rnlt1 fc">
 							        <li><span class="bg1"></span>已答题</li>
 							        <li><span class="bg2"></span>待确定</li>
 							        <li><span class="bg3"></span>未答题</li>
 							      </ul>
-							      <ul class="rnlt2 fc" tabindex="5000" style="overflow: hidden; outline: medium none;">
+							      <ul class="rnlt2 fc" tabindex="5000" style="outline: medium none;">
 							      	<c:forEach var="question" items="${questions}" varStatus="vs">   
 										
 										<li><a href="#d${vs.index+1}" id="fc_${question.id}" class="bg3">${vs.index+1}</a></li>
@@ -144,22 +144,21 @@
 					</div>
 					
 					<div  id="times"  class="footbar">
-						<div  style="margin-left:30px;vertical-align:middle; width:100%"  id="zyjs">
+						<div  style="margin-left:30px;vertical-align:middle; width:100%;height:120px;"  id="zyjs">
 							<table  border="0" width="98%">
 								<tbody>
 									<tr>
-										<td  align="right"  id="Time1">
-											<div class="example exampleA" style="float:left">
-												<div class="timer"></div>
-											</div>
-										</td>
-										<td width="50%" align="left">
+										<td width="60%" align="center">
 											<button type="button" class="btn btn-primary btn-label-left btn-lg" style="height: 40px; width:100px;" onclick="submitAnswer();">
 											<span><i class="fa fa-clock-o"></i></span>
 												提交
 											</button>
 										</td>
-										
+										<td  align="right"  id="Time1">
+											<div class="example exampleA" style="float:right">
+												<div class="timer"></div>
+											</div>
+										</td>
 									</tr>
 								</tbody>
 							</table>
@@ -211,6 +210,7 @@ function autoSubmit(){
 function submitAnswer(){
 	$.messager.confirm('交卷', '确定提交答案？', function(r){
 		if (r){
+			submitted = true;
 			var all = true;
 			$('input:radio').each(function(){
 				if(!$(this).is(':checked')){
@@ -261,8 +261,9 @@ function autoSubmit(){
 }
 
 $(document).ready(function() {
+	
 	$('.exampleA .timer').spriteTimer({
-		   'seconds': ${paper.minutes}*60,
+		   'seconds': ${availableTimeMinutes}*60,
 		   'isCountDown': true,
 
 		   'digitImagePath': '${ctx}/img/numbers.png',
@@ -280,22 +281,7 @@ $(document).ready(function() {
     		//var left= $(window).scrollLeft()+500; 
     		$("#ansdiv").css({ top: top + "px" }); 
      });
-	/*
-	window.onbeforeunload = function(){
-		
-		if(confirm("确定关闭页面?")){
-		return true;
-		}
-		else{
-			$.messager.confirm('Confirm','关闭窗口将以当前状态提交时间，确定?',function(r){
-				if (r){   
-					alert('ok');   
-				}   
-			});
-			return false;
-		}
-		}
-	*/
+	
 });
 
 //window.onbeforeunload = closeWin;
@@ -316,9 +302,39 @@ function setselect(obj){
 	$("#fc_"+id).attr("class", "bg1");
 }
 
-function tbc(id){
-	$("#fc_"+id).attr("class", "bg2");
+function tbc(thi, id){
+	var val = $(thi).val();
+	if(val == "待确定"){
+		$(thi).val("取消待确定");
+		$("#fc_"+id).attr("class", "bg2");
+	}
+	if(val == "取消待确定"){
+		$(thi).val("待确定");
+		$("#fc_"+id).attr("class", "bg1");
+	}
 }
+
+
+var switchScreenTimes = 0; // 允许三次切屏，超过则提交
+window.onblur = function () {
+	if(!submitted){
+	    if(switchScreenTimes >= 3) {
+	    	setAnswer();
+	    	//$.messager.alert('自动提交','您已切屏超过限制，系统将自动提交答案！');
+	    	//setTimeout("autoSubmit()",1000); 
+		}
+	    else{
+	    	switchScreenTimes++;
+	    	//alert("考试过程中，禁止切屏，超过三次将自动提交试卷，您已经切屏" + switchScreenTimes + "次，请注意！");
+	    	//$.messager.alert("操作提示","考试过程中，禁止切屏，超过三次将自动提交试卷，您已经切屏" + switchScreenTimes + "次，请注意！");
+	    }
+	}
+}
+
+//   window.onfocus = function () {
+// 	  alert("亲，欢迎你回来");
+//   }
+
 </script>
 </body>
 </html>
