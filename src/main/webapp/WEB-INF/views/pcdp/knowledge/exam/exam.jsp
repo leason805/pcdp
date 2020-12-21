@@ -45,7 +45,7 @@
 		</style>
 		
 	</head>
-<body >
+<body oncontextmenu="self.event.returnValue=false">
 
 <div class="row">
 	<div class="col-xs-12">
@@ -283,6 +283,16 @@ $(document).ready(function() {
     		//var left= $(window).scrollLeft()+500; 
     		$("#ansdiv").css({ top: top + "px" }); 
      });
+     
+     $(document).bind("keydown", function(e) {//文档绑定键盘按下事件
+    	    e = window.event || e;//解决浏览器兼容的问题   
+    	    if(e.keyCode == 116) {//F5按下
+    	    　　e.keyCode = 0;
+    	    　　return false;
+    	    }else{
+    	    　　//让其刷新
+    	    }
+    	});
 	
 });
 
