@@ -15,8 +15,8 @@
 		<link href="<%=request.getContextPath()%>/plugins/bootstrap/bootstrap.css" rel="stylesheet">
 		<link href="<%=request.getContextPath()%>/css/font-awesome.css" rel="stylesheet">
 		<link href='<%=request.getContextPath()%>/css/G_Font_Righteous.css' rel='stylesheet' type='text/css'>
-		<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
-		<link href='http://fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css'>
+		<link href="${ctx}/css/font-awesome.css" rel="stylesheet">
+		<link href='${ctx}/css/G_Font_Righteous.css' rel='stylesheet' type='text/css'>
 		<link href="<%=request.getContextPath()%>/css/style.css" rel="stylesheet">
 		<link href="${ctx}/css/login.css" rel="stylesheet" type="text/css" />
 		

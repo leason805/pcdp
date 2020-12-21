@@ -13,8 +13,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link href="${ctx}/plugins/bootstrap/bootstrap.css" rel="stylesheet">
 		<link href="${ctx}/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
-		<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
-		<link href='http://fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css'>
+		<link href="${ctx}/css/font-awesome.css" rel="stylesheet">
+		<link href='${ctx}/css/G_Font_Righteous.css' rel='stylesheet' type='text/css'>
 
 		<link href="${ctx}/css/style.css" rel="stylesheet">
 

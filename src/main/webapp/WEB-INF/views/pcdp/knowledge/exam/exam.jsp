@@ -15,8 +15,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link href="${ctx}/plugins/bootstrap/bootstrap.css" rel="stylesheet">
 		<link href="${ctx}/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+		<link href="${ctx}/css/font-awesome.css" rel="stylesheet">
 		<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 		<link href='http://fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css'>
+		<link href='${ctx}/css/G_Font_Righteous.css' rel='stylesheet' type='text/css'>
 		<link href="${ctx}/plugins/fancybox/jquery.fancybox.css" rel="stylesheet">
 		<link href="${ctx}/plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
 		<link href="${ctx}/plugins/xcharts/xcharts.min.css" rel="stylesheet">
@@ -320,13 +322,12 @@ window.onblur = function () {
 	if(!submitted){
 	    if(switchScreenTimes >= 3) {
 	    	setAnswer();
-	    	//$.messager.alert('自动提交','您已切屏超过限制，系统将自动提交答案！');
-	    	//setTimeout("autoSubmit()",1000); 
+	    	$.messager.alert('自动提交','您已切屏超过限制，系统将自动提交答案！');
+	    	setTimeout("autoSubmit()",1000); 
 		}
 	    else{
 	    	switchScreenTimes++;
-	    	//alert("考试过程中，禁止切屏，超过三次将自动提交试卷，您已经切屏" + switchScreenTimes + "次，请注意！");
-	    	//$.messager.alert("操作提示","考试过程中，禁止切屏，超过三次将自动提交试卷，您已经切屏" + switchScreenTimes + "次，请注意！");
+	    	$.messager.alert("操作提示","考试过程中，禁止切屏，超过三次将自动提交试卷，您已经切屏" + switchScreenTimes + "次，请注意！");
 	    }
 	}
 }
